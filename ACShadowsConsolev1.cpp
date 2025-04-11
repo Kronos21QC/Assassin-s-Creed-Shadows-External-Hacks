@@ -48,10 +48,11 @@ bool PatchEx(HANDLE hProcess, uintptr_t dest, BYTE* src, SIZE_T size) {
 	return false;
 }
 
+
 void ToggleGodMode(HANDLE hProcess, uintptr_t moduleBase, bool activate) {
 	BYTE godmodeOn[10] = { 0xEB, 0x19, 0xC5, 0xFA, 0x5D, 0x80, 0x78, 0x01, 0x00, 0x00 };
 	BYTE godmodeOff[10] = { 0x74, 0x19, 0xC5, 0xFA, 0x5D, 0x80, 0x78, 0x01, 0x00, 0x00 };
-	uintptr_t godModeOffset = 0x02A23C12;
+	uintptr_t godModeOffset = 0x02AB7C22;
 	uintptr_t godModeAddr = moduleBase + godModeOffset;
 
 	bool result = activate ?
@@ -64,7 +65,7 @@ void ToggleGodMode(HANDLE hProcess, uintptr_t moduleBase, bool activate) {
 void ToggleFreeUpgrade(HANDLE hProcess, uintptr_t moduleBase, bool activate) {
 	BYTE upgradeON[3] = { 0x90, 0x90, 0x90 };
 	BYTE upgradeOFF[3] = { 0x89, 0x5E, 0x30 };
-	uintptr_t upgradeOffset = 0x07E02EC2;
+	uintptr_t upgradeOffset = 0x07F35432;
 	uintptr_t upgradeAddr = moduleBase + upgradeOffset;
 
 	bool result = activate ?
@@ -74,18 +75,7 @@ void ToggleFreeUpgrade(HANDLE hProcess, uintptr_t moduleBase, bool activate) {
 	cout << (result ? "[+] Free Upgrade toggled successfully.\n" : "[-] Free Upgrade toggle failed!\n");
 }
 
-void Toggle1HitKill(HANDLE hProcess, uintptr_t moduleBase, bool activate) {
-	BYTE hitkillON[7] = { 0x04, 0x01, 0xE9, 0x75, 0x46, 0x55, 0xFD }; // Credit 
-	BYTE hitkillOFF[7] = { 0x04, 0x01, 0xC5, 0xFA, 0x11, 0x46, 0x1C };
-	uintptr_t hitkillOffset = 0x02A9B984;
-	uintptr_t hitkillAddr = moduleBase + hitkillOffset;
 
-	bool result = activate ?
-		PatchEx(hProcess, hitkillAddr, hitkillON, sizeof(hitkillON)) :
-		PatchEx(hProcess, hitkillAddr, hitkillOFF, sizeof(hitkillOFF));
-
-	cout << (result ? "[+] 1 Hit Kill toggled successfully.\n" : "[-] 1 Hit Kill toggle failed!\n");
-}
 
 struct Hack {
 	string name;
